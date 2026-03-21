@@ -57,7 +57,8 @@ const COMPANY_INFO = {
   address: "Caminho 33, Hernani Sá - Ilhéus Bahia",
   hours: "Segunda a domingo • 18:00 - 23:30",
   whatsappUrl: "https://wa.me/5573981260962",
-  deliveryTime: "30-45 min"
+  deliveryTime: "30-45 min",
+  logo: "https://storage.googleapis.com/birdview-external-production/67dd988675402422071060/67dd988675402422071060_0.png"
 };
 
 const BURGERS: Product[] = [
@@ -101,13 +102,40 @@ const DRINKS: Product[] = [
   { id: 'd4', name: 'Refrigerante 1 litro Coca cola', category: 'drinks', price: 10.00, description: 'Garrafa 1L', icon: 'CupSoda' },
 ];
 
+const DELIVERY_LOCATIONS = [
+  { name: "Urbis", fee: 3.00 },
+  { name: "Nelson Costa", fee: 5.00 },
+  { name: "Barreira", fee: 5.00 },
+  { name: "Ilhéus II", fee: 6.00 },
+  { name: "Nsv.", fee: 7.00 },
+  { name: "Pontal", fee: 6.00 },
+  { name: "Centro", fee: 10.00 },
+  { name: "Conquista até a proximidades da praça Santa Rita", fee: 10.00 },
+  { name: "Conquista depois da praça", fee: 12.00 },
+  { name: "Malhado", fee: 15.00 },
+  { name: "Barra", fee: 17.00 },
+  { name: "Vilela", fee: 25.00 },
+  { name: "Avenida princesa Isabel começo", fee: 10.00 },
+  { name: "Avenida princesa Isabel mais pra frente", fee: 12.00 },
+  { name: "Avenida Itabuna", fee: 12.00 },
+  { name: "Avenida esperança", fee: 14.00 },
+];
+
 // --- Components ---
 
 const ProductIcon = ({ name, size = 24, className = "" }: { name?: string, size?: number, className?: string }) => {
   if (name === 'Beef') return <Beef size={size} className={className} />;
   if (name === 'Utensils') return <Utensils size={size} className={className} />;
   if (name === 'CupSoda') return <CupSoda size={size} className={className} />;
-  return <Beef size={size} className={className} />;
+  return (
+    <img 
+      src={COMPANY_INFO.logo} 
+      alt="Product Icon" 
+      style={{ width: size, height: size }} 
+      className={`object-contain ${className}`}
+      referrerPolicy="no-referrer"
+    />
+  );
 };
 
 export default function App() {
@@ -127,6 +155,8 @@ export default function App() {
   const [paymentMethod, setPaymentMethod] = useState<'Pix' | 'Dinheiro' | 'Cartão'>('Pix');
   const [changeFor, setChangeFor] = useState('');
   const [address, setAddress] = useState('');
+  const [observations, setObservations] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState<typeof DELIVERY_LOCATIONS[0] | null>(null);
 
   // Persist cart
   useEffect(() => {
@@ -145,6 +175,14 @@ export default function App() {
   }, [cart]);
 
   const cartTotal = useMemo(() => {
+    const subtotal = cart.reduce((total, item) => {
+      const addonsTotal = item.selectedAddons.reduce((sum, a) => sum + a.price, 0);
+      return total + (item.product.price + addonsTotal) * item.quantity;
+    }, 0);
+    return subtotal + (selectedLocation?.fee || 0);
+  }, [cart, selectedLocation]);
+
+  const subtotal = useMemo(() => {
     return cart.reduce((total, item) => {
       const addonsTotal = item.selectedAddons.reduce((sum, a) => sum + a.price, 0);
       return total + (item.product.price + addonsTotal) * item.quantity;
@@ -208,6 +246,11 @@ export default function App() {
       return;
     }
 
+    if (!selectedLocation) {
+      alert("Por favor, selecione a localidade para entrega.");
+      return;
+    }
+
     let message = `*Pedido Skina33*\n\n`;
     message += `*Itens:*\n`;
     cart.forEach(item => {
@@ -217,12 +260,18 @@ export default function App() {
       }
     });
 
-    message += `\n*Total: R$ ${cartTotal.toFixed(2)}*\n`;
+    message += `\n*Subtotal: R$ ${subtotal.toFixed(2)}*\n`;
+    message += `*Taxa de entrega (${selectedLocation.name}): R$ ${selectedLocation.fee.toFixed(2)}*\n`;
+    message += `*Total: R$ ${cartTotal.toFixed(2)}*\n\n`;
     message += `*Forma de pagamento:* ${paymentMethod}\n`;
     if (paymentMethod === 'Dinheiro' && changeFor) {
       message += `*Troco para:* R$ ${changeFor}\n`;
     }
+    message += `*Localidade:* ${selectedLocation.name}\n`;
     message += `*Endereço de entrega:* ${address}\n`;
+    if (observations) {
+      message += `*Observações:* ${observations}\n`;
+    }
 
     const encodedMessage = encodeURIComponent(message);
     window.open(`${COMPANY_INFO.whatsappUrl}?text=${encodedMessage}`, '_blank');
@@ -236,14 +285,24 @@ export default function App() {
     <div className="min-h-screen bg-white text-zinc-900 font-sans pb-32">
       {/* Header / Store Info */}
       <header className="relative">
-        <div className="h-32 bg-red-600 flex items-center justify-center">
-          <Beef size={64} className="text-white opacity-20" />
+        <div className="h-32 bg-red-600 flex items-center justify-center overflow-hidden">
+          <img 
+            src={COMPANY_INFO.logo} 
+            alt="Skina33 Background" 
+            className="w-full h-full object-cover opacity-30 blur-sm scale-110"
+            referrerPolicy="no-referrer"
+          />
         </div>
         
         <div className="max-w-3xl mx-auto px-4 -mt-12 relative z-10">
           <div className="bg-white rounded-xl shadow-md p-5 flex flex-col items-center text-center border border-zinc-100">
-            <div className="w-20 h-20 bg-red-600 rounded-full border-4 border-white -mt-14 shadow-lg flex items-center justify-center text-white font-black text-2xl">
-              <Beef size={32} />
+            <div className="w-24 h-24 bg-white rounded-full border-4 border-white -mt-16 shadow-lg flex items-center justify-center overflow-hidden">
+              <img 
+                src={COMPANY_INFO.logo} 
+                alt={COMPANY_INFO.name} 
+                className="w-full h-full object-contain"
+                referrerPolicy="no-referrer"
+              />
             </div>
             <h1 className="text-2xl font-bold mt-3">{COMPANY_INFO.name}</h1>
             <p className="text-zinc-500 text-sm">{COMPANY_INFO.slogan}</p>
@@ -499,7 +558,15 @@ export default function App() {
                 <button onClick={() => setIsCartOpen(false)} className="p-2 text-red-600">
                   <ChevronLeft size={24} />
                 </button>
-                <h2 className="text-lg font-bold">Sua sacola</h2>
+                <div className="flex items-center gap-3">
+                  <img 
+                    src={COMPANY_INFO.logo} 
+                    alt={COMPANY_INFO.name} 
+                    className="w-8 h-8 object-contain"
+                    referrerPolicy="no-referrer"
+                  />
+                  <h2 className="text-lg font-bold">Sua sacola</h2>
+                </div>
               </div>
 
               <div className="flex-1 overflow-y-auto">
@@ -556,18 +623,55 @@ export default function App() {
                       </div>
                     </div>
 
+                    {/* Observations */}
+                    <div className="bg-white rounded-xl shadow-sm p-4 space-y-3">
+                      <div className="flex items-center gap-3 text-zinc-900">
+                        <Info size={20} className="text-red-600" />
+                        <h3 className="font-bold">Observações</h3>
+                      </div>
+                      <textarea 
+                        value={observations}
+                        onChange={(e) => setObservations(e.target.value)}
+                        placeholder="Ex: Tirar cebola, ponto da carne, etc."
+                        className="w-full bg-zinc-50 border border-zinc-100 rounded-lg p-3 text-sm focus:ring-1 focus:ring-red-500 outline-none min-h-[60px]"
+                      />
+                    </div>
+
                     {/* Delivery Address */}
                     <div className="bg-white rounded-xl shadow-sm p-4 space-y-4">
                       <div className="flex items-center gap-3 text-zinc-900">
                         <MapPin size={20} className="text-red-600" />
-                        <h3 className="font-bold">Endereço de entrega</h3>
+                        <h3 className="font-bold">Localidade e Endereço</h3>
                       </div>
-                      <textarea 
-                        value={address}
-                        onChange={(e) => setAddress(e.target.value)}
-                        placeholder="Rua, número, bairro e ponto de referência"
-                        className="w-full bg-zinc-50 border border-zinc-100 rounded-lg p-3 text-sm focus:ring-1 focus:ring-red-500 outline-none min-h-[80px]"
-                      />
+                      
+                      <div className="space-y-2">
+                        <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider">Selecione sua localidade</label>
+                        <select 
+                          value={selectedLocation?.name || ''}
+                          onChange={(e) => {
+                            const loc = DELIVERY_LOCATIONS.find(l => l.name === e.target.value);
+                            setSelectedLocation(loc || null);
+                          }}
+                          className="w-full bg-zinc-50 border border-zinc-100 rounded-lg p-3 text-sm focus:ring-1 focus:ring-red-500 outline-none appearance-none cursor-pointer"
+                        >
+                          <option value="">Selecione uma localidade...</option>
+                          {DELIVERY_LOCATIONS.map(loc => (
+                            <option key={loc.name} value={loc.name}>
+                              {loc.name} - R$ {loc.fee.toFixed(2)}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider">Endereço detalhado</label>
+                        <textarea 
+                          value={address}
+                          onChange={(e) => setAddress(e.target.value)}
+                          placeholder="Rua, número, bairro e ponto de referência"
+                          className="w-full bg-zinc-50 border border-zinc-100 rounded-lg p-3 text-sm focus:ring-1 focus:ring-red-500 outline-none min-h-[80px]"
+                        />
+                      </div>
                     </div>
 
                     {/* Payment */}
@@ -612,16 +716,24 @@ export default function App() {
                     <div className="bg-white rounded-xl shadow-sm p-4 space-y-3">
                       <div className="flex justify-between text-sm">
                         <span className="text-zinc-500">Subtotal</span>
-                        <span>R$ {cartTotal.toFixed(2)}</span>
+                        <span>R$ {subtotal.toFixed(2)}</span>
                       </div>
+                      {selectedLocation && (
+                        <div className="flex justify-between text-sm">
+                          <span className="text-zinc-500">Taxa de entrega ({selectedLocation.name})</span>
+                          <span>R$ {selectedLocation.fee.toFixed(2)}</span>
+                        </div>
+                      )}
                       <div className="flex flex-col gap-1 pt-2 border-t border-zinc-50">
                         <div className="flex justify-between font-bold text-lg">
                           <span>Total</span>
                           <span>R$ {cartTotal.toFixed(2)}</span>
                         </div>
-                        <p className="text-[10px] text-zinc-400 italic">
-                          * A taxa de entrega será informada via WhatsApp após o envio do pedido.
-                        </p>
+                        {!selectedLocation && (
+                          <p className="text-[10px] text-red-500 font-medium">
+                            * Selecione uma localidade para calcular o total com entrega.
+                          </p>
+                        )}
                       </div>
                     </div>
                   </div>
