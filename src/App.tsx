@@ -58,7 +58,7 @@ const COMPANY_INFO = {
   hours: "Segunda a domingo • 18:00 - 23:30",
   whatsappUrl: "https://wa.me/5573981260962",
   deliveryTime: "30-45 min",
-  logo: "https://storage.googleapis.com/birdview-external-production/67dd988675402422071060/67dd988675402422071060_0.png"
+  logo: "https://i.imgur.com/IubATXv.png"
 };
 
 const BURGERS: Product[] = [
