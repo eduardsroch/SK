@@ -62,16 +62,16 @@ const COMPANY_INFO = {
 };
 
 const BURGERS: Product[] = [
-  { id: 'b1', name: 'Skina cheddar cremoso', category: 'burgers', price: 19.99, description: 'Pão batata, Hambúrguer artesanal 130g, Cheddar cremoso, Bacon, Cebola caramelizada', icon: 'Beef' },
-  { id: 'b2', name: 'Skina burguer', category: 'burgers', price: 18.99, description: 'Pão batata, Hambúrguer artesanal 130g, Queijo, Presunto, Molho especial 33, Salada, Batata palha', icon: 'Beef' },
-  { id: 'b3', name: 'Skina bacon', category: 'burgers', price: 26.99, description: 'Pão batata, Hambúrguer artesanal 130g, Bacon, Queijo, Presunto, Molho especial 33, Salada, Batata palha, Cebola caramelizada', icon: 'Beef' },
-  { id: 'b4', name: 'Skina egg bacon', category: 'burgers', price: 27.99, description: 'Pão batata, Hambúrguer artesanal 130g, Bacon, Queijo, Presunto, Ovo, Molho especial 33, Salada, Cebola caramelizada, Batata palha', icon: 'Beef' },
-  { id: 'b5', name: 'Skina sertão', category: 'burgers', price: 31.99, description: 'Pão batata, Hambúrguer artesanal 130g, Queijo coalho, Melaço de cana, Bacon, Banana frita', icon: 'Beef' },
-  { id: 'b6', name: 'Skina cream cheese', category: 'burgers', price: 29.99, description: 'Pão batata, Hambúrguer artesanal 130g, Cream cheese, Cebola caramelizada, Bacon', icon: 'Beef' },
-  { id: 'b7', name: 'Skina 04 queijos', category: 'burgers', price: 33.99, description: 'Pão batata, Hambúrguer artesanal 130g, Gorgonzola, Mussarela, Requeijão cremoso, Catupiry, Bacon, Molho especial, Salada', icon: 'Beef' },
-  { id: 'b8', name: 'Skina frango', category: 'burgers', price: 22.99, description: 'Pão batata, Frango desfiado, Queijo mussarela, Bacon, Salada', icon: 'Beef' },
-  { id: 'b9', name: 'Skina tropical burguer', category: 'burgers', price: 27.99, description: 'Pão batata, Hambúrguer artesanal 130g, Requeijão cremoso, Bacon, Abacaxi, Salada, Molho especial', icon: 'Beef' },
-  { id: 'b10', name: 'Skina calabresa', category: 'burgers', price: 25.99, description: 'Pão batata, Hambúrguer artesanal, Mussarela, Calabresa, Ovo, Molho especial 33, Salada, Batata palha, Cebola caramelizada', icon: 'Beef' },
+  { id: 'b1', name: 'Skina cheddar cremoso', category: 'burgers', price: 19.99, description: 'Pão de batata, Hambúrguer artesanal 130g, Cheddar cremoso, Bacon, Cebola caramelizada', icon: 'Beef' },
+  { id: 'b2', name: 'Skina burguer', category: 'burgers', price: 18.99, description: 'Pão de batata, Hambúrguer artesanal 130g, Queijo, Presunto, Molho especial 33, Salada', icon: 'Beef' },
+  { id: 'b3', name: 'Skina bacon', category: 'burgers', price: 26.99, description: 'Pão de batata, Hambúrguer artesanal 130g, Bacon, Queijo, Presunto, Molho especial 33, Salada, Cebola caramelizada', icon: 'Beef' },
+  { id: 'b4', name: 'Skina egg bacon', category: 'burgers', price: 27.99, description: 'Pão de batata, Hambúrguer artesanal 130g, Bacon, Queijo, Presunto, Ovo, Molho especial 33, Salada, Cebola caramelizada, Batata palha', icon: 'Beef' },
+  { id: 'b5', name: 'Skina sertão', category: 'burgers', price: 31.99, description: 'Pão de batata, Hambúrguer artesanal 130g, Queijo coalho, Melaço de cana, Bacon, Banana frita', icon: 'Beef' },
+  { id: 'b6', name: 'Skina cream cheese', category: 'burgers', price: 29.99, description: 'Pão de batata, Hambúrguer artesanal 130g, Cream cheese, Cebola caramelizada, Bacon', icon: 'Beef' },
+  { id: 'b7', name: 'Skina 04 queijos', category: 'burgers', price: 33.99, description: 'Pão de batata, Hambúrguer artesanal 130g, Gorgonzola, Mussarela, Requeijão cremoso, Catupiry, Bacon, Molho especial, Salada', icon: 'Beef' },
+  { id: 'b8', name: 'Skina frango', category: 'burgers', price: 22.99, description: 'Pão de batata, Frango desfiado, Queijo mussarela, Bacon, Salada', icon: 'Beef' },
+  { id: 'b9', name: 'Skina tropical burguer', category: 'burgers', price: 27.99, description: 'Pão de batata, Hambúrguer artesanal 130g, Requeijão cremoso, Bacon, Abacaxi, Salada, Molho especial', icon: 'Beef' },
+  { id: 'b10', name: 'Skina calabresa', category: 'burgers', price: 25.99, description: 'Pão de batata, Hambúrguer artesanal, Mussarela, Calabresa, Ovo, Molho especial 33, Salada, Batata palha, Cebola caramelizada', icon: 'Beef' },
 ];
 
 const ADDONS: Addon[] = [
