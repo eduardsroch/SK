@@ -152,6 +152,7 @@ export default function App() {
   const drinkRef = useRef<HTMLDivElement>(null);
 
   // Checkout state
+  const [orderType, setOrderType] = useState<'delivery' | 'pickup'>('delivery');
   const [paymentMethod, setPaymentMethod] = useState<'Pix' | 'Dinheiro' | 'Cartão'>('Pix');
   const [changeFor, setChangeFor] = useState('');
   const [address, setAddress] = useState('');
@@ -179,8 +180,8 @@ export default function App() {
       const addonsTotal = item.selectedAddons.reduce((sum, a) => sum + a.price, 0);
       return total + (item.product.price + addonsTotal) * item.quantity;
     }, 0);
-    return subtotal + (selectedLocation?.fee || 0);
-  }, [cart, selectedLocation]);
+    return subtotal + (orderType === 'delivery' ? (selectedLocation?.fee || 0) : 0);
+  }, [cart, selectedLocation, orderType]);
 
   const subtotal = useMemo(() => {
     return cart.reduce((total, item) => {
@@ -241,17 +242,20 @@ export default function App() {
   };
 
   const checkout = () => {
-    if (!address) {
-      alert("Por favor, preencha o endereço de entrega.");
-      return;
-    }
+    if (orderType === 'delivery') {
+      if (!address) {
+        alert("Por favor, preencha o endereço de entrega.");
+        return;
+      }
 
-    if (!selectedLocation) {
-      alert("Por favor, selecione a localidade para entrega.");
-      return;
+      if (!selectedLocation) {
+        alert("Por favor, selecione a localidade para entrega.");
+        return;
+      }
     }
 
     let message = `*Pedido Skina33*\n\n`;
+    message += `*Tipo de pedido:* ${orderType === 'delivery' ? 'Entrega' : 'Retirada no local'}\n\n`;
     message += `*Itens:*\n`;
     cart.forEach(item => {
       message += `• ${item.product.name} x ${item.quantity} (R$ ${item.product.price.toFixed(2)})\n`;
@@ -261,14 +265,22 @@ export default function App() {
     });
 
     message += `\n*Subtotal: R$ ${subtotal.toFixed(2)}*\n`;
-    message += `*Taxa de entrega (${selectedLocation.name}): R$ ${selectedLocation.fee.toFixed(2)}*\n`;
+    if (orderType === 'delivery' && selectedLocation) {
+      message += `*Taxa de entrega (${selectedLocation.name}): R$ ${selectedLocation.fee.toFixed(2)}*\n`;
+    }
     message += `*Total: R$ ${cartTotal.toFixed(2)}*\n\n`;
     message += `*Forma de pagamento:* ${paymentMethod}\n`;
     if (paymentMethod === 'Dinheiro' && changeFor) {
       message += `*Troco para:* R$ ${changeFor}\n`;
     }
-    message += `*Localidade:* ${selectedLocation.name}\n`;
-    message += `*Endereço de entrega:* ${address}\n`;
+    
+    if (orderType === 'delivery' && selectedLocation) {
+      message += `*Localidade:* ${selectedLocation.name}\n`;
+      message += `*Endereço de entrega:* ${address}\n`;
+    } else {
+      message += `*Retirada no local:* ${COMPANY_INFO.address}\n`;
+    }
+
     if (observations) {
       message += `*Observações:* ${observations}\n`;
     }
@@ -623,6 +635,29 @@ export default function App() {
                       </div>
                     </div>
 
+                    {/* Order Type Selection */}
+                    <div className="bg-white rounded-xl shadow-sm p-4 space-y-3">
+                      <h3 className="font-bold text-sm text-zinc-400 uppercase tracking-widest">Como deseja receber?</h3>
+                      <div className="flex p-1 bg-zinc-100 rounded-lg">
+                        <button 
+                          onClick={() => setOrderType('delivery')}
+                          className={`flex-1 py-2 text-sm font-bold rounded-md transition-all ${
+                            orderType === 'delivery' ? 'bg-white text-red-600 shadow-sm' : 'text-zinc-500'
+                          }`}
+                        >
+                          Entrega
+                        </button>
+                        <button 
+                          onClick={() => setOrderType('pickup')}
+                          className={`flex-1 py-2 text-sm font-bold rounded-md transition-all ${
+                            orderType === 'pickup' ? 'bg-white text-red-600 shadow-sm' : 'text-zinc-500'
+                          }`}
+                        >
+                          Retirada
+                        </button>
+                      </div>
+                    </div>
+
                     {/* Observations */}
                     <div className="bg-white rounded-xl shadow-sm p-4 space-y-3">
                       <div className="flex items-center gap-3 text-zinc-900">
@@ -638,41 +673,60 @@ export default function App() {
                     </div>
 
                     {/* Delivery Address */}
-                    <div className="bg-white rounded-xl shadow-sm p-4 space-y-4">
-                      <div className="flex items-center gap-3 text-zinc-900">
-                        <MapPin size={20} className="text-red-600" />
-                        <h3 className="font-bold">Localidade e Endereço</h3>
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider">Selecione sua localidade</label>
-                        <select 
-                          value={selectedLocation?.name || ''}
-                          onChange={(e) => {
-                            const loc = DELIVERY_LOCATIONS.find(l => l.name === e.target.value);
-                            setSelectedLocation(loc || null);
-                          }}
-                          className="w-full bg-zinc-50 border border-zinc-100 rounded-lg p-3 text-sm focus:ring-1 focus:ring-red-500 outline-none appearance-none cursor-pointer"
-                        >
-                          <option value="">Selecione uma localidade...</option>
-                          {DELIVERY_LOCATIONS.map(loc => (
-                            <option key={loc.name} value={loc.name}>
-                              {loc.name} - R$ {loc.fee.toFixed(2)}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
+                    {orderType === 'delivery' && (
+                      <div className="bg-white rounded-xl shadow-sm p-4 space-y-4">
+                        <div className="flex items-center gap-3 text-zinc-900">
+                          <MapPin size={20} className="text-red-600" />
+                          <h3 className="font-bold">Localidade e Endereço</h3>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider">Selecione sua localidade</label>
+                          <select 
+                            value={selectedLocation?.name || ''}
+                            onChange={(e) => {
+                              const loc = DELIVERY_LOCATIONS.find(l => l.name === e.target.value);
+                              setSelectedLocation(loc || null);
+                            }}
+                            className="w-full bg-zinc-50 border border-zinc-100 rounded-lg p-3 text-sm focus:ring-1 focus:ring-red-500 outline-none appearance-none cursor-pointer"
+                          >
+                            <option value="">Selecione uma localidade...</option>
+                            {DELIVERY_LOCATIONS.map(loc => (
+                              <option key={loc.name} value={loc.name}>
+                                {loc.name} - R$ {loc.fee.toFixed(2)}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
 
-                      <div className="space-y-2">
-                        <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider">Endereço detalhado</label>
-                        <textarea 
-                          value={address}
-                          onChange={(e) => setAddress(e.target.value)}
-                          placeholder="Rua, número, bairro e ponto de referência"
-                          className="w-full bg-zinc-50 border border-zinc-100 rounded-lg p-3 text-sm focus:ring-1 focus:ring-red-500 outline-none min-h-[80px]"
-                        />
+                        <div className="space-y-2">
+                          <label className="text-xs font-bold text-zinc-400 uppercase tracking-wider">Endereço detalhado</label>
+                          <textarea 
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                            placeholder="Rua, número, bairro e ponto de referência"
+                            className="w-full bg-zinc-50 border border-zinc-100 rounded-lg p-3 text-sm focus:ring-1 focus:ring-red-500 outline-none min-h-[80px]"
+                          />
+                        </div>
                       </div>
-                    </div>
+                    )}
+
+                    {orderType === 'pickup' && (
+                      <div className="bg-white rounded-xl shadow-sm p-4 space-y-3 border-2 border-red-100">
+                        <div className="flex items-center gap-3 text-zinc-900">
+                          <MapPin size={20} className="text-red-600" />
+                          <h3 className="font-bold">Local de Retirada</h3>
+                        </div>
+                        <p className="text-sm text-zinc-600 leading-relaxed">
+                          {COMPANY_INFO.address}
+                        </p>
+                        <div className="bg-red-50 p-3 rounded-lg">
+                          <p className="text-xs text-red-700 font-medium">
+                            Seu pedido estará pronto para retirada em aproximadamente {COMPANY_INFO.deliveryTime}.
+                          </p>
+                        </div>
+                      </div>
+                    )}
 
                     {/* Payment */}
                     <div className="bg-white rounded-xl shadow-sm p-4 space-y-4">
@@ -718,10 +772,16 @@ export default function App() {
                         <span className="text-zinc-500">Subtotal</span>
                         <span>R$ {subtotal.toFixed(2)}</span>
                       </div>
-                      {selectedLocation && (
+                      {orderType === 'delivery' && selectedLocation && (
                         <div className="flex justify-between text-sm">
                           <span className="text-zinc-500">Taxa de entrega ({selectedLocation.name})</span>
                           <span>R$ {selectedLocation.fee.toFixed(2)}</span>
+                        </div>
+                      )}
+                      {orderType === 'pickup' && (
+                        <div className="flex justify-between text-sm">
+                          <span className="text-zinc-500">Retirada no local</span>
+                          <span className="text-green-600 font-bold uppercase text-[10px]">Grátis</span>
                         </div>
                       )}
                       <div className="flex flex-col gap-1 pt-2 border-t border-zinc-50">
@@ -729,7 +789,7 @@ export default function App() {
                           <span>Total</span>
                           <span>R$ {cartTotal.toFixed(2)}</span>
                         </div>
-                        {!selectedLocation && (
+                        {orderType === 'delivery' && !selectedLocation && (
                           <p className="text-[10px] text-red-500 font-medium">
                             * Selecione uma localidade para calcular o total com entrega.
                           </p>
