@@ -39,6 +39,7 @@ interface Product {
   price: number;
   category: 'burgers' | 'portions' | 'drinks';
   icon?: string;
+  image?: string;
 }
 
 interface CartItem {
@@ -62,7 +63,7 @@ const COMPANY_INFO = {
 };
 
 const BURGERS: Product[] = [
-  { id: 'b1', name: 'Skina cheddar cremoso', category: 'burgers', price: 19.99, description: 'Pão de batata, Hambúrguer artesanal 130g, Cheddar cremoso, Bacon, Cebola caramelizada', icon: 'Beef' },
+  { id: 'b1', name: 'Skina cheddar cremoso', category: 'burgers', price: 19.99, description: 'Pão de batata, Hambúrguer artesanal 130g, Cheddar cremoso, Bacon, Cebola caramelizada', icon: 'Beef', image: 'https://i.imgur.com/miLp3pm.jpeg' },
   { id: 'b2', name: 'Skina burguer', category: 'burgers', price: 18.99, description: 'Pão de batata, Hambúrguer artesanal 130g, Queijo, Presunto, Molho especial 33, Salada', icon: 'Beef' },
   { id: 'b3', name: 'Skina bacon', category: 'burgers', price: 26.99, description: 'Pão de batata, Hambúrguer artesanal 130g, Bacon, Queijo, Presunto, Molho especial 33, Salada, Cebola caramelizada', icon: 'Beef' },
   { id: 'b4', name: 'Skina egg bacon', category: 'burgers', price: 27.99, description: 'Pão de batata, Hambúrguer artesanal 130g, Bacon, Queijo, Presunto, Ovo, Molho especial 33, Salada, Cebola caramelizada, Batata palha', icon: 'Beef' },
@@ -153,6 +154,8 @@ export default function App() {
 
   // Checkout state
   const [orderType, setOrderType] = useState<'delivery' | 'pickup'>('delivery');
+  const [customerName, setCustomerName] = useState('');
+  const [customerPhone, setCustomerPhone] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<'Pix' | 'Dinheiro' | 'Cartão'>('Pix');
   const [changeFor, setChangeFor] = useState('');
   const [address, setAddress] = useState('');
@@ -242,6 +245,11 @@ export default function App() {
   };
 
   const checkout = () => {
+    if (!customerName.trim()) {
+      alert("Por favor, informe seu nome.");
+      return;
+    }
+
     if (orderType === 'delivery') {
       if (!address) {
         alert("Por favor, preencha o endereço de entrega.");
@@ -255,6 +263,10 @@ export default function App() {
     }
 
     let message = `*Pedido Skina33*\n\n`;
+    message += `*Cliente:* ${customerName}\n`;
+    if (customerPhone) {
+      message += `*Telefone:* ${customerPhone}\n`;
+    }
     message += `*Tipo de pedido:* ${orderType === 'delivery' ? 'Entrega' : 'Retirada no local'}\n\n`;
     message += `*Itens:*\n`;
     cart.forEach(item => {
@@ -476,8 +488,17 @@ export default function App() {
               </div>
 
               <div className="overflow-y-auto flex-1">
-                <div className="h-48 bg-red-50 relative flex items-center justify-center">
-                  <ProductIcon name={selectedProductForAddons.icon} size={80} className="text-red-600 opacity-20" />
+                <div className="h-48 bg-red-50 relative flex items-center justify-center overflow-hidden">
+                  {selectedProductForAddons.image ? (
+                    <img 
+                      src={selectedProductForAddons.image} 
+                      alt={selectedProductForAddons.name}
+                      className="w-full h-full object-cover"
+                      referrerPolicy="no-referrer"
+                    />
+                  ) : (
+                    <ProductIcon name={selectedProductForAddons.icon} size={80} className="text-red-600 opacity-20" />
+                  )}
                 </div>
                 
                 <div className="p-6 space-y-6">
@@ -636,25 +657,47 @@ export default function App() {
                     </div>
 
                     {/* Order Type Selection */}
-                    <div className="bg-white rounded-xl shadow-sm p-4 space-y-3">
-                      <h3 className="font-bold text-sm text-zinc-400 uppercase tracking-widest">Como deseja receber?</h3>
-                      <div className="flex p-1 bg-zinc-100 rounded-lg">
-                        <button 
-                          onClick={() => setOrderType('delivery')}
-                          className={`flex-1 py-2 text-sm font-bold rounded-md transition-all ${
-                            orderType === 'delivery' ? 'bg-white text-red-600 shadow-sm' : 'text-zinc-500'
-                          }`}
-                        >
-                          Entrega
-                        </button>
-                        <button 
-                          onClick={() => setOrderType('pickup')}
-                          className={`flex-1 py-2 text-sm font-bold rounded-md transition-all ${
-                            orderType === 'pickup' ? 'bg-white text-red-600 shadow-sm' : 'text-zinc-500'
-                          }`}
-                        >
-                          Retirada
-                        </button>
+                    <div className="bg-white rounded-xl shadow-sm p-4 space-y-4">
+                      <div className="space-y-3">
+                        <h3 className="font-bold text-sm text-zinc-400 uppercase tracking-widest">Seus Dados</h3>
+                        <div className="space-y-3">
+                          <input 
+                            type="text"
+                            value={customerName}
+                            onChange={(e) => setCustomerName(e.target.value)}
+                            placeholder="Seu nome (obrigatório)"
+                            className="w-full bg-zinc-50 border border-zinc-100 rounded-lg p-3 text-sm focus:ring-1 focus:ring-red-500 outline-none"
+                          />
+                          <input 
+                            type="tel"
+                            value={customerPhone}
+                            onChange={(e) => setCustomerPhone(e.target.value)}
+                            placeholder="Seu telefone (opcional)"
+                            className="w-full bg-zinc-50 border border-zinc-100 rounded-lg p-3 text-sm focus:ring-1 focus:ring-red-500 outline-none"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="pt-2">
+                        <h3 className="font-bold text-sm text-zinc-400 uppercase tracking-widest mb-3">Como deseja receber?</h3>
+                        <div className="flex p-1 bg-zinc-100 rounded-lg">
+                          <button 
+                            onClick={() => setOrderType('delivery')}
+                            className={`flex-1 py-2 text-sm font-bold rounded-md transition-all ${
+                              orderType === 'delivery' ? 'bg-white text-red-600 shadow-sm' : 'text-zinc-500'
+                            }`}
+                          >
+                            Entrega
+                          </button>
+                          <button 
+                            onClick={() => setOrderType('pickup')}
+                            className={`flex-1 py-2 text-sm font-bold rounded-md transition-all ${
+                              orderType === 'pickup' ? 'bg-white text-red-600 shadow-sm' : 'text-zinc-500'
+                            }`}
+                          >
+                            Retirada
+                          </button>
+                        </div>
                       </div>
                     </div>
 
@@ -841,7 +884,16 @@ const ProductItem: React.FC<{ product: Product; onClick: () => void }> = ({ prod
         </div>
       </div>
       <div className="w-24 h-24 rounded-lg overflow-hidden bg-red-50 flex-shrink-0 flex items-center justify-center">
-        <ProductIcon name={product.icon} size={32} className="text-red-600 opacity-40" />
+        {product.image ? (
+          <img 
+            src={product.image} 
+            alt={product.name} 
+            className="w-full h-full object-cover"
+            referrerPolicy="no-referrer"
+          />
+        ) : (
+          <ProductIcon name={product.icon} size={32} className="text-red-600 opacity-40" />
+        )}
       </div>
     </motion.div>
   );
