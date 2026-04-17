@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Google AI Studio App</title>
-    <link rel="manifest" href="/manifest.json" />
+    <title>Skina33</title>
+    <link rel="manifest" href="./manifest.json" />
     <meta name="theme-color" content="#dc2626" />
     <link rel="apple-touch-icon" href="https://i.imgur.com/IubATXv.png" />
   </head>
@@ -14,7 +14,9 @@
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js');
+          navigator.serviceWorker.register('./sw.js', { scope: './' })
+            .then(reg => console.log('SW registered!', reg))
+            .catch(err => console.error('SW registration failed:', err));
         });
       }
     </script>

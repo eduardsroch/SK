@@ -469,7 +469,17 @@ export default function App() {
       {/* Footer Info */}
       <footer className="max-w-3xl mx-auto px-4 mt-12 pb-12 text-center text-zinc-400 text-xs space-y-2">
         <p>{COMPANY_INFO.name} • {COMPANY_INFO.address}</p>
-        <p>Desenvolvido com carinho para você.</p>
+        <p>
+          Desenvolvido por{' '}
+          <a 
+            href="https://github.com/eduardsroch" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-red-600 font-medium hover:underline"
+          >
+            Eduardo Soares Rocha
+          </a>
+        </p>
       </footer>
 
       {/* Bottom Cart Bar */}
