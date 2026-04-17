@@ -64,15 +64,15 @@ const COMPANY_INFO = {
 
 const BURGERS: Product[] = [
   { id: 'b1', name: 'Skina cheddar cremoso', category: 'burgers', price: 19.99, description: 'Pão de batata, Hambúrguer artesanal 130g, Cheddar cremoso, Bacon, Cebola caramelizada', icon: 'Beef', image: 'https://i.imgur.com/miLp3pm.jpeg' },
-  { id: 'b2', name: 'Skina burguer', category: 'burgers', price: 18.99, description: 'Pão de batata, Hambúrguer artesanal 130g, Queijo, Presunto, Molho especial 33, Salada', icon: 'Beef' },
-  { id: 'b3', name: 'Skina bacon', category: 'burgers', price: 26.99, description: 'Pão de batata, Hambúrguer artesanal 130g, Bacon, Queijo, Presunto, Molho especial 33, Salada, Cebola caramelizada', icon: 'Beef' },
+  { id: 'b2', name: 'Skina burguer', category: 'burgers', price: 18.99, description: 'Pão de batata, Hambúrguer artesanal 130g, Queijo, Presunto, Molho especial 33, Salada', icon: 'Beef', image: 'https://i.imgur.com/gQ4GdNJ.jpeg' },
+  { id: 'b3', name: 'Skina bacon', category: 'burgers', price: 26.99, description: 'Pão de batata, Hambúrguer artesanal 130g, Bacon, Queijo, Presunto, Molho especial 33, Salada, Cebola caramelizada', icon: 'Beef', image: 'https://i.imgur.com/K8t92cu.jpeg' },
   { id: 'b4', name: 'Skina egg bacon', category: 'burgers', price: 27.99, description: 'Pão de batata, Hambúrguer artesanal 130g, Bacon, Queijo, Presunto, Ovo, Molho especial 33, Salada, Cebola caramelizada, Batata palha', icon: 'Beef' },
-  { id: 'b5', name: 'Skina sertão', category: 'burgers', price: 31.99, description: 'Pão de batata, Hambúrguer artesanal 130g, Queijo coalho, Melaço de cana, Bacon, Banana frita', icon: 'Beef' },
+  { id: 'b5', name: 'Skina sertão', category: 'burgers', price: 31.99, description: 'Pão de batata, Hambúrguer artesanal 130g, Queijo coalho, Melaço de cana, Bacon, Banana frita', icon: 'Beef', image: 'https://i.imgur.com/ruiYY92.jpeg' },
   { id: 'b6', name: 'Skina cream cheese', category: 'burgers', price: 29.99, description: 'Pão de batata, Hambúrguer artesanal 130g, Cream cheese, Cebola caramelizada, Bacon', icon: 'Beef' },
   { id: 'b7', name: 'Skina 04 queijos', category: 'burgers', price: 33.99, description: 'Pão de batata, Hambúrguer artesanal 130g, Gorgonzola, Mussarela, Requeijão cremoso, Catupiry, Bacon, Molho especial, Salada', icon: 'Beef' },
   { id: 'b8', name: 'Skina frango', category: 'burgers', price: 22.99, description: 'Pão de batata, Frango desfiado, Queijo mussarela, Bacon, Salada', icon: 'Beef' },
-  { id: 'b9', name: 'Skina tropical burguer', category: 'burgers', price: 27.99, description: 'Pão de batata, Hambúrguer artesanal 130g, Requeijão cremoso, Bacon, Abacaxi, Salada, Molho especial', icon: 'Beef' },
-  { id: 'b10', name: 'Skina calabresa', category: 'burgers', price: 25.99, description: 'Pão de batata, Hambúrguer artesanal, Mussarela, Calabresa, Ovo, Molho especial 33, Salada, Batata palha, Cebola caramelizada', icon: 'Beef' },
+  { id: 'b9', name: 'Skina tropical burguer', category: 'burgers', price: 27.99, description: 'Pão de batata, Hambúrguer artesanal 130g, Requeijão cremoso, Bacon, Abacaxi, Salada, Molho especial', icon: 'Beef', image: 'https://i.imgur.com/CxiRhl2.jpeg' },
+  { id: 'b10', name: 'Skina calabresa', category: 'burgers', price: 25.99, description: 'Pão de batata, Hambúrguer artesanal, Mussarela, Calabresa, Ovo, Molho especial 33, Salada, Batata palha, Cebola caramelizada', icon: 'Beef', image: 'https://i.imgur.com/oefgSUL.jpeg' },
 ];
 
 const ADDONS: Addon[] = [
@@ -93,14 +93,14 @@ const ADDONS: Addon[] = [
 
 const PORTIONS: Product[] = [
   { id: 'p1', name: 'Batata frita', category: 'portions', price: 19.99, description: 'Porção crocante de batata frita', icon: 'Utensils' },
-  { id: 'p2', name: 'Batata frita com cheddar + bacon', category: 'portions', price: 24.99, description: 'Porção de batata frita coberta com cheddar cremoso e bacon crocante', icon: 'Utensils' },
+  { id: 'p2', name: 'Batata frita com cheddar + bacon', category: 'portions', price: 24.99, description: 'Porção de batata frita coberta com cheddar cremoso e bacon crocante', icon: 'Utensils', image: 'https://i.imgur.com/zg6LOzP.jpeg' },
 ];
 
 const DRINKS: Product[] = [
-  { id: 'd1', name: 'Suco 500ml (sabores)', category: 'drinks', price: 10.00, description: 'Suco natural de diversos sabores', icon: 'CupSoda' },
-  { id: 'd2', name: 'Refrigerante lata', category: 'drinks', price: 6.00, description: 'Lata 350ml', icon: 'CupSoda' },
-  { id: 'd3', name: 'Refrigerante 1 litro Guaraná', category: 'drinks', price: 9.00, description: 'Garrafa 1L', icon: 'CupSoda' },
-  { id: 'd4', name: 'Refrigerante 1 litro Coca cola', category: 'drinks', price: 10.00, description: 'Garrafa 1L', icon: 'CupSoda' },
+  { id: 'd1', name: 'Suco 500ml (sabores)', category: 'drinks', price: 10.00, description: 'Suco natural de diversos sabores', icon: 'CupSoda', image: 'https://i.imgur.com/AefnSrN.jpeg' },
+  { id: 'd2', name: 'Refrigerante lata', category: 'drinks', price: 6.00, description: 'Lata 350ml', icon: 'CupSoda', image: 'https://i.imgur.com/k0u5TL4.jpeg' },
+  { id: 'd3', name: 'Refrigerante 1 litro Guaraná', category: 'drinks', price: 9.00, description: 'Garrafa 1L', icon: 'CupSoda', image: 'https://i.imgur.com/fxOwVYD.jpeg' },
+  { id: 'd4', name: 'Refrigerante 1 litro Coca cola', category: 'drinks', price: 10.00, description: 'Garrafa 1L', icon: 'CupSoda', image: 'https://i.imgur.com/2PPI9M1.jpeg' },
 ];
 
 const DELIVERY_LOCATIONS = [
