@@ -20,7 +20,9 @@ import {
   Info,
   Trash2,
   Check,
-  ChevronRight
+  ChevronRight,
+  Smartphone,
+  Download
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -147,6 +149,35 @@ export default function App() {
   const [tempQuantity, setTempQuantity] = useState(1);
   const [activeCategory, setActiveCategory] = useState<'burgers' | 'portions' | 'drinks'>('burgers');
   const [searchQuery, setSearchQuery] = useState('');
+
+  // PWA Install State
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [showInstallButton, setShowInstallButton] = useState(false);
+
+  useEffect(() => {
+    const handler = (e: any) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setShowInstallButton(true);
+    };
+
+    window.addEventListener('beforeinstallprompt', handler);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handler);
+    };
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      console.log('User accepted the install prompt');
+    }
+    setDeferredPrompt(null);
+    setShowInstallButton(false);
+  };
 
   const burgerRef = useRef<HTMLDivElement>(null);
   const portionRef = useRef<HTMLDivElement>(null);
@@ -347,7 +378,32 @@ export default function App() {
       </header>
 
       {/* Search Bar */}
-      <div className="max-w-3xl mx-auto px-4 mt-6">
+      <div className="max-w-3xl mx-auto px-4 mt-6 space-y-4">
+        {showInstallButton && (
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-red-50 border border-red-100 p-4 rounded-xl flex items-center justify-between gap-4"
+          >
+            <div className="flex items-center gap-3">
+              <div className="bg-red-600 p-2 rounded-lg text-white">
+                <Smartphone size={20} />
+              </div>
+              <div className="flex flex-col">
+                <span className="font-bold text-sm text-zinc-900">Instalar App</span>
+                <span className="text-[11px] text-zinc-500">Acesse o cardápio mais rápido da sua tela inicial</span>
+              </div>
+            </div>
+            <button 
+              onClick={handleInstallClick}
+              className="bg-red-600 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-red-700 transition-colors flex items-center gap-2 shadow-sm"
+            >
+              <Download size={14} />
+              Instalar
+            </button>
+          </motion.div>
+        )}
+
         <div className="relative">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" size={18} />
           <input 
