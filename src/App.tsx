@@ -75,6 +75,10 @@ const BURGERS: Product[] = [
   { id: 'b8', name: 'Skina frango', category: 'burgers', price: 22.99, description: 'Pão de batata, Frango desfiado, Queijo mussarela, Bacon, Salada', icon: 'Beef' },
   { id: 'b9', name: 'Skina tropical burguer', category: 'burgers', price: 27.99, description: 'Pão de batata, Hambúrguer artesanal 130g, Requeijão cremoso, Bacon, Abacaxi, Salada, Molho especial', icon: 'Beef', image: 'https://i.imgur.com/CxiRhl2.jpeg' },
   { id: 'b10', name: 'Skina calabresa', category: 'burgers', price: 25.99, description: 'Pão de batata, Hambúrguer artesanal, Mussarela, Calabresa, Ovo, Molho especial 33, Salada, Batata palha, Cebola caramelizada', icon: 'Beef', image: 'https://i.imgur.com/oefgSUL.jpeg' },
+  { id: 'b11', name: 'Skina Nordestina', category: 'burgers', price: 39.00, description: 'Pão de batata, Hambúrguer artesanal (130g), cream cheese, carne seca desfiada, geleia de pimenta, molho especial Skina 33, salada (opcional)', icon: 'Beef' },
+  { id: 'b12', name: 'Skina Gigante', category: 'burgers', price: 42.00, description: 'Pao de batata, 02 carnes artesanal (130G) cada, DUPLO de mussarela, ovo, calabresa, Presunto, farofa de bacon, molho especial Skina 33, cebola caramelizada, salada (opcional)', icon: 'Beef' },
+  { id: 'b13', name: 'Skina imperial', category: 'burgers', price: 37.00, description: 'Pão de batata, Hambúrguer artesanal (130g), lombinho defumado, cream chesse, bacon, geleia de amora, salada (opcional)', icon: 'Beef' },
+  { id: 'b14', name: 'Skina Arretado', category: 'burgers', price: 40.00, description: 'Pao de batata, Hambúrguer artesanal (130g), carne seca desfiada, queijo coalho, banana da terra, geleia de pimenta', icon: 'Beef' },
 ];
 
 const ADDONS: Addon[] = [
@@ -91,6 +95,10 @@ const ADDONS: Addon[] = [
   { id: 'a11', name: 'Cream cheese', price: 5.00 },
   { id: 'a12', name: 'Frango', price: 5.99 },
   { id: 'a13', name: 'Batata palha', price: 2.00 },
+  { id: 'a14', name: 'Geleia de pimenta', price: 5.00 },
+  { id: 'a15', name: 'Geleia de amora', price: 6.00 },
+  { id: 'a16', name: 'Lombinho', price: 6.00 },
+  { id: 'a17', name: 'Carne seca', price: 9.00 },
 ];
 
 const PORTIONS: Product[] = [
